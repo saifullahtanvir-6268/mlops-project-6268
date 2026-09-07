@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "housing.csv"
@@ -34,7 +34,7 @@ def build_pipeline() -> Pipeline:
 
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", SimpleImputer(strategy="median"), numeric_features),
+            ("num", Pipeline(steps=[SimpleImputer(strategy="median"), MinMaxScaler()]), numeric_features),
             (
                 "cat",
                 Pipeline(
