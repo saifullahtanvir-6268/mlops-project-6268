@@ -34,7 +34,16 @@ def build_pipeline() -> Pipeline:
 
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", Pipeline(steps=[SimpleImputer(strategy="median"), StandardScaler()]), numeric_features),
+            (
+                "num",
+                Pipeline(
+                    steps=[
+                        ("imputer", SimpleImputer(strategy="median")),
+                        ("scaler", StandardScaler()),
+                    ]
+                ),
+                numeric_features,
+            ),
             (
                 "cat",
                 Pipeline(
